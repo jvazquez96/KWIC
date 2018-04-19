@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <fstream>
 #include <sstream>
+#include "Alphabetizer.cpp"
 
 using namespace std;
 
@@ -87,9 +88,14 @@ vector<string> splitLine(string line, char delimiter) {
 }
 
 void printLines(vector<string> lines) {
-    for(int i = 0; i < lines.size(); i++) {
-        printf("%s\n", lines[i].c_str());
-    }
+	Alphabetizer alphabetizer = Alphabetizer(lines);
+	bool type ;// Ascending
+	cout << "Do you want to sort it your ascending(1) or descending(0)" << endl;
+	cin >> type;
+	vector<string> sortedLines = alphabetizer.sort(type);
+	for (auto &i : sortedLines) {
+		cout << i << endl;
+	}
 }
 
 vector<string> generateRotations(vector<string> line) {
