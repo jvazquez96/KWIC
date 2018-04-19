@@ -14,6 +14,7 @@
 #include <sstream>
 #include "Alphabetizer.cpp"
 #include "CircularShifter.cpp"
+#include "Input.cpp"
 
 using namespace std;
 
@@ -129,9 +130,9 @@ int main() {
 
     // check if input will come from a file or the command console
     isFile = askInputSource(fileName);
-    
+    Input inputParser = Input(isFile, fileName);
     // get the lines
-    linesList = getInput(isFile, fileName);
+    linesList = inputParser.getInput();
     
     // Shift stuff
     vector<vector<string> > wordsByLine = processInput(linesList);
