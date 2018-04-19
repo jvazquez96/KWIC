@@ -17,7 +17,8 @@ using namespace std;
 
 class Input {
 	public:
-		Input(bool isFile, string fileName);
+		Input();
+		void askInputSource();
 		queue<string> getInput();
 		vector<vector<string> > processInput(queue<string> lines);
 	private:
@@ -26,9 +27,25 @@ class Input {
 		vector<string> splitLine(string line, char delimite);
 };
 
-Input::Input(bool isFile, string fileName) {
-	this->isFile = isFile;
-	this->fileName = fileName;
+void Input::askInputSource() {
+	char answer = 'n';
+	cout << "Input from a file? (y/n): ";
+	cin >> answer;
+	cin.ignore();
+	if (tolower(answer) == 'y') {
+		// input source is a file
+		cout << "Enter a file name with its extension: ";
+		cin >> fileName;
+		cin.ignore();
+		this->isFile = true;
+	} else {
+		this->isFile = false;
+	}
+}
+
+Input::Input() {
+	this->isFile = false;
+	this->fileName = "";
 }
 
 queue<string> Input::getInput()  {

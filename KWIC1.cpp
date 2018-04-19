@@ -18,24 +18,6 @@
 
 using namespace std;
 
-bool askInputSource(string &fileName) {
-
-    char answer = 'n';
-    cout << "Input from a file? (y/n): ";
-    cin >> answer;
-    cin.ignore();
-    if(tolower(answer) == 'y') {
-        // input source is a file
-        cout << "Enter a file name with its extension: ";
-        cin >> fileName;
-        cin.ignore();
-        return true;
-    } else {
-        // input source is not a file
-        return false;
-    }
-}
-
 void printLines(vector<string> lines) {
 	Alphabetizer alphabetizer = Alphabetizer(lines);
 	bool type ;// Ascending
@@ -48,14 +30,12 @@ void printLines(vector<string> lines) {
 }
 
 int main() {
-
     queue<string> linesList;
-    string word, line, fileName = "";
-    bool isFile = false;
 
-    // check if input will come from a file or the command console
-    isFile = askInputSource(fileName);
-    Input inputParser = Input(isFile, fileName);
+    Input inputParser = Input();
+	// check if input will come from a file or the command console
+    inputParser.askInputSource();
+
     // get the stuff again
     linesList = inputParser.getInput();
     
