@@ -13,6 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include "Alphabetizer.cpp"
+#include "CircularShifter.cpp"
 
 using namespace std;
 
@@ -98,55 +99,7 @@ void printLines(vector<string> lines) {
 	}
 }
 
-vector<string> generateRotations(vector<string> line) {
-
-    vector<string> results;
-    string words = "";
-    string rotatedWord = "";
-    for(int j = 0; j < line.size(); j++) {
-        for(int i = 0; i < line.size(); i++) {
-            // get line into a single string
-            words += line[i] + " ";
-        }
-        // add this rotation to the results
-        results.push_back(words);
-
-        // save the word at the start
-        rotatedWord = line[0];
-
-        // move word at the start to the end
-        line.erase(line.begin());
-        line.push_back(rotatedWord);
-
-        // set words back to empty
-        words = "";
-    }
-    
-    return results;
-}
-
-void rotateLines(vector<vector<string> > v) {
-
-
-    vector<string> rotatedLines(1);
-    vector<string> aux;
-    string line;
-    for(int i = 0; i < v.size(); i++) {
-        // for each line do the following, generate its rotations
-        aux = generateRotations(v[i]);
-        // append it to final vector 
-        rotatedLines.insert(rotatedLines.end(), aux.begin(), aux.end());
-    }
-    rotatedLines.erase(rotatedLines.begin());
-
-    // sort
-    sort(rotatedLines.begin(), rotatedLines.end());
-    // print result
-    cout << "\n";
-    printLines(rotatedLines);
-}
-
-void processInput(queue<string> lines) {
+vector<vector<string> > processInput(queue<string> lines) {
 
     string line;
     vector<vector<string> > wordsByLine;
@@ -164,9 +117,7 @@ void processInput(queue<string> lines) {
         // remove line from queue;
         lines.pop();
     }
-
-    rotateLines(wordsByLine);
-
+    return wordsByLine;
 }
 
 
@@ -176,14 +127,19 @@ int main() {
     string word, line, fileName = "";
     bool isFile = false;
 
-    
     // check if input will come from a file or the command console
     isFile = askInputSource(fileName);
     
     // get the lines
     linesList = getInput(isFile, fileName);
     
-    processInput(linesList);
+    // Shift stuff
+    vector<vector<string> > wordsByLine = processInput(linesList);
+   	CircularShifter shifter = CircularShifter(wordsByLine);
+   	vector<string> rotatedLines = shifter.rotateLines();
+
+   	// Print stuff
+    printLines(rotatedLines);
 
 	return 0;
 }
