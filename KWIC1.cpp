@@ -1,33 +1,12 @@
-#include <algorithm>
-#include <string>
-#include <deque>
-#include <iomanip>
 #include <iostream>
-#include <queue>
-#include <map>
-#include <set>
-#include <stack>
 #include <vector>
-#include <stdio.h>
-#include <ctype.h>
-#include <fstream>
-#include <sstream>
+#include <queue>
 #include "Alphabetizer.cpp"
 #include "CircularShifter.cpp"
 #include "Input.cpp"
+#include "Output.cpp"
 
 using namespace std;
-
-void printLines(vector<string> lines) {
-	Alphabetizer alphabetizer = Alphabetizer(lines);
-	bool type ;// Ascending
-	cout << "Do you want to sort it your ascending(1) or descending(0)" << endl;
-	cin >> type;
-	vector<string> sortedLines = alphabetizer.sort(type);
-	for (auto &i : sortedLines) {
-		cout << i << endl;
-	}
-}
 
 int main() {
     queue<string> linesList;
@@ -46,8 +25,16 @@ int main() {
    	CircularShifter shifter = CircularShifter(wordsByLine);
    	vector<string> rotatedLines = shifter.rotateLines();
 
+   	// Sort the stuff
+   	Alphabetizer alphabetizer = Alphabetizer(rotatedLines);
+   	bool type;
+   	cout << "Do you want to sort it ascending(1) or descending(0)" << endl;
+   	cin >> type;
+   	vector<string> sortedLines = alphabetizer.sort(type);
+
    	// Print stuff
-    printLines(rotatedLines);
+    Output printer = Output(sortedLines);
+    printer.print();
 
 	return 0;
 }
