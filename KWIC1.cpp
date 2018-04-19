@@ -36,59 +36,6 @@ bool askInputSource(string &fileName) {
     }
 }
 
-queue<string> getInput(bool isFile, string fileName) {
-
-    string line = "";
-    queue<string> result;
-
-    if(isFile) {
-        // open file
-        ifstream myFile(fileName);
-        if(myFile.is_open()) {
-            // process file if it was opened
-            while (getline(myFile, line)) {
-                // push line to queue
-                result.push(line);
-            }
-            myFile.close();
-        } else {
-            cout << "File could not be opened.\n";
-        }
-    } else {
-        // ask for lines
-        int linesAmount = 0;
-        string line = "";
-        cout << "How many lines will there be? ";
-        cin >> linesAmount;
-        cin.ignore();
-        while (linesAmount--) {
-            // get line x
-            getline(cin, line);
-            result.push(line);
-        }
-    }
-    return result;
-}
-
-vector<string> splitLine(string line, char delimiter) {
-
-    // convert all words to lower 
-    transform(line.begin(), line.end(), line.begin(),(int (*)(int))tolower);
-
-    // remove "." periods
-    line.erase(line.find("."));
-
-    std::istringstream ss(line);
-    string word;
-    vector<string> v;
-    while (getline(ss, word, delimiter)) {
-        // push every single word to the vector
-        v.push_back(word);
-    }
-    return v;
-
-}
-
 void printLines(vector<string> lines) {
 	Alphabetizer alphabetizer = Alphabetizer(lines);
 	bool type ;// Ascending
@@ -100,28 +47,6 @@ void printLines(vector<string> lines) {
 	}
 }
 
-vector<vector<string> > processInput(queue<string> lines) {
-
-    string line;
-    vector<vector<string> > wordsByLine;
-    vector<string> inner;
-
-    while(!lines.empty()) {
-
-        // get line
-        line = lines.front();
-
-        // split into words and add it to vector of vectors
-        inner = splitLine(line, ' ');
-        wordsByLine.push_back(inner);
-
-        // remove line from queue;
-        lines.pop();
-    }
-    return wordsByLine;
-}
-
-
 int main() {
 
     queue<string> linesList;
@@ -131,11 +56,13 @@ int main() {
     // check if input will come from a file or the command console
     isFile = askInputSource(fileName);
     Input inputParser = Input(isFile, fileName);
-    // get the lines
+    // get the stuff again
     linesList = inputParser.getInput();
     
-    // Shift stuff
-    vector<vector<string> > wordsByLine = processInput(linesList);
+    // Get the stuff again
+    vector<vector<string> > wordsByLine = inputParser.processInput(linesList);
+
+    // Circular shift the stuff
    	CircularShifter shifter = CircularShifter(wordsByLine);
    	vector<string> rotatedLines = shifter.rotateLines();
 

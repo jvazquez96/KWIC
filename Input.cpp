@@ -19,9 +19,11 @@ class Input {
 	public:
 		Input(bool isFile, string fileName);
 		queue<string> getInput();
+		vector<vector<string> > processInput(queue<string> lines);
 	private:
 		bool isFile;
 		string fileName;
+		vector<string> splitLine(string line, char delimite);
 };
 
 Input::Input(bool isFile, string fileName) {
@@ -60,4 +62,36 @@ queue<string> Input::getInput()  {
 		}
 	}
 	return result;
+}
+
+vector<vector<string> > Input::processInput(queue<string> lines) {
+	string line;
+	vector<vector<string> > wordsByLine;
+	vector<string> inner;
+
+	while(!lines.empty()) {
+		// get line
+		line = lines.front();
+		// split into words and add it to vectors of vectors
+		inner = splitLine(line, ' ');
+		wordsByLine.push_back(inner);
+		// remove line from queue
+		lines.pop();
+	}
+	return wordsByLine;
+}
+
+vector<string> Input::splitLine(string line, char delimiter) {
+	// convert all words to lower
+	transform(line.begin(), line.end(), line.begin(),(int (*)(int))tolower);
+	// remove "." periods
+	line.erase(line.find("."));
+	std::istringstream ss(line);
+	string word;
+	vector<string> v;
+	while (getline(ss, word, delimiter)) {
+		// push every single word to the vector
+		v.push_back(word);
+	}
+	return v;
 }
