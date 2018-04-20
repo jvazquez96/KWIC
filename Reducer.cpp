@@ -18,23 +18,23 @@ class Reducer {
     public:
         // constructors
         Reducer();
-        Reducer(vector<string> vInput);
-        Reducer(vector<string> vInput, vector<int> vLines);
+        Reducer(vector<vector<string> > input);
+        Reducer(vector<vector<string> > input, vector<int> lines);
 
         // getters
-        vector<string> getInputLines();
+        vector<vector<string> > getInputLines();
         vector<int> getLinesToReduce();
 
         // setters
-        void setInputLines(vector<string> vI);
+        void setInputLines(vector<vector<string> > vI);
         void setReduceLines(vector<int> vR);
 
         // additional functions
-        vector<string> eraseLines();
+        vector<vector<string> > eraseLines();
         void askForLines();
     // Attributes
     private:
-        vector<string> vInput;
+        vector<vector<string> > vInput;
         vector<int> vLines; //contains the indexes of the liens to remove
 
 };
@@ -43,17 +43,18 @@ Reducer::Reducer() {
     // vectors get initialized on their own
 }
 
-Reducer::Reducer(vector<string> vInput) {
-    this->vInput = vInput;
+Reducer::Reducer(vector<vector<string> > input) {
+    this->vInput = input;
 }
 
-Reducer::Reducer(vector<string> vInput, vector<int> vLines) {
-    this->vInput = vInput;
-    this->vLines = vLines;
+Reducer::Reducer(vector<vector<string> > input, vector<int> lines) {
+    this->vInput = input;
+    this->vLines = lines;
+    ::sort(this->vLines.begin(), this->vLines.end(), less<int> ());
 }
 
 // getters
-vector<string> Reducer::getInputLines() {
+vector<vector<string> > Reducer::getInputLines() {
     return this->vInput;
 }
 
@@ -61,21 +62,26 @@ vector<int> Reducer::getLinesToReduce() {
     return this->vLines;
 }
 // setters
-void Reducer::setInputLines(vector<string> vI) {
+void Reducer::setInputLines(vector<vector<string> > vI) {
     this->vInput = vI;
 }
 void Reducer::setReduceLines(vector<int> vR) {
     this->vLines = vR;
 }
 // additional
-vector<string> Reducer::eraseLines() {
+vector<vector<string> > Reducer::eraseLines() {
     // for the user line indexing starts at 1.
     // so we need to substract 1 to each line index given
+    int counter = 0;
+    int line = 0;
+    int index = 0;
     for(int i = 0; i < this->vLines.size(); i++) {
-        int line = this->vLines[i] - 1;
-        this->vInput.erase(this->vInput.begin() + line);
+        line = this->vLines[i] - 1;
+        index = line - counter;
+        this->vInput.erase(vInput.begin() + index);
+        counter++;
     }
-    return vInput;
+    return this->vInput;
 }
 void Reducer::askForLines() {
     // empty vector of lines

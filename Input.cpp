@@ -28,11 +28,13 @@ class Input {
 		Input();
 		void askInputSource();
 		vector<vector<string> > getInput();
+		vector<int> getLinesToRemove(vector<vector<string> > input);
 	private:
 		bool isFile;
 		string fileName;
 		vector<vector<string> > processInput(queue<string> lines);
-		vector<string> splitLine(string line, char delimite);
+		vector<string> splitLine(string line);
+		vector<int> indexes;
 };
 
 // Empty constructor.
@@ -60,6 +62,50 @@ void Input::askInputSource() {
 	} else {
 		this->isFile = false;
 	}
+}
+
+// This function asks for the indexes of the lines to remove from 
+// the original input
+vector<int> Input::getLinesToRemove(vector<vector<string> > input) {
+	vector<int> indexes;
+	cout << "Do you want to delete lines from the original input? yes(1), no(0)? ";
+    bool isDelete = false;
+    cin >> isDelete;
+	if (isDelete) {
+      int number_lines_reduced = 0;
+      do {
+        cout << "How many lines do you want to remove? ";
+        cin >> number_lines_reduced;
+        if (number_lines_reduced < 0) {
+          cout << "Error: Please enter a positive number of lines." << endl;
+        } else if (number_lines_reduced >= input.size()) {
+          cout << "Error: Please enter a number lower than the number of lines." << endl;
+        }
+      } while (number_lines_reduced < 0 or number_lines_reduced >= input.size());
+      int index;
+      
+      while (number_lines_reduced) {
+        do {
+          cout << "Enter the index of line you want to delete: ";
+          cin >> index;
+          if (index < 0) {
+            cout << "Error: Please make sure to enter a number greater than 0." << endl;
+          } else if (index > input.size()) {
+            cout << "Error: Please make sure to enter an index that does not exceed the number of lines." << endl;
+          } else if (find(indexes.begin(), indexes.end(), index) != indexes.end()) {
+            cout << "Error: Please make sure not to enter repeated indexes" << endl;
+            cout << "The current indexes are: " << endl;
+            for (auto &i: indexes) {
+              cout << i << " ";
+            }
+            cout << endl;
+          }
+        } while ((index < 0 or index > number_lines_reduced > input.size()) or find(indexes.begin(), indexes.end(), index) != indexes.end());
+        indexes.push_back(index);
+        --number_lines_reduced;
+      }
+    }
+	return indexes;
 }
 
 // This functions goes through all the file or the user input
@@ -93,6 +139,7 @@ vector<vector<string> > Input::getInput()  {
 		cout << "How many lines will there be? ";
 		cin >> linesAmount;
 		cin.ignore();
+		cout << "Enter your input:\n";
 		while (linesAmount--) {
 			// get line x
 			getline(cin, line);
@@ -108,12 +155,11 @@ vector<vector<string> > Input::processInput(queue<string> lines) {
 	string line;
 	vector<vector<string> > wordsByLine;
 	vector<string> inner;
-
 	while(!lines.empty()) {
 		// get line
 		line = lines.front();
 		// split into words and add it to vectors of vectors
-		inner = splitLine(line, ' ');
+		inner = splitLine(line);
 		wordsByLine.push_back(inner);
 		// remove line from queue
 		lines.pop();
@@ -124,17 +170,14 @@ vector<vector<string> > Input::processInput(queue<string> lines) {
 // Converts every word to lowercase and removes the period (if it has one)
 // receives as a parameter a string that represents the line, and a delimitir
 // always a ' ' (space)
-vector<string> Input::splitLine(string line, char delimiter) {
+vector<string> Input::splitLine(string line) {
 	// convert all words to lower
 	transform(line.begin(), line.end(), line.begin(),(int (*)(int))tolower);
-	// remove "." periods
-	line.erase(line.find("."));
-	std::istringstream ss(line);
-	string word;
-	vector<string> v;
-	while (getline(ss, word, delimiter)) {
-		// push every single word to the vector
-		v.push_back(word);
-	}
+	// remove all "." periods
+	line.erase(remove(line.begin(), line.end(), '.'), line.end());
+	istringstream iss(line);
+    vector<string> v(istream_iterator<string>{iss},
+                                 istream_iterator<string>());
+
 	return v;
 }
