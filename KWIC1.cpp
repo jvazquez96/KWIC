@@ -16,33 +16,14 @@ int main() {
     // First filter, get the input
     Input inputParser = Input();
     vector<vector<string> > wordsByLine = inputParser.getInput();
-    vector<int> indexes = inputParser.getLinesToRemove(wordsByLine);
 
     // Second filter
-    char ask = ' ';
-    cout << "Do you want to erase some words from the input(y/n)? ";
-    cin >> ask;
-    while(ask != 'y' && ask != 'n') {
-        cout << "Error: Answer should be 'y' or 'n'\n";
-        cout << "Do you want to erase some words from the input(y/n)? ";
-        cin >> ask;
-    }
-    if(ask == 'y') {
-        vector<string> stopWords;
-        int amount = 0;
-        string word = "";
-        cout << "How many words? ";
-        cin >> amount;
-        for(int i = 0; i < amount; i++) {
-            cout << "Word #" << i+1 << ": ";
-            cin >> word;
-            stopWords.push_back(word);            
-        }
-        Cleaner wordCleaner = Cleaner(wordsByLine, stopWords);
-        wordsByLine = wordCleaner.removeWords();
-    }
+    vector<string> stopWords = inputParser.getStopWords(wordsByLine);
+    Cleaner wordCleaner = Cleaner(wordsByLine, stopWords);
+    wordsByLine = wordCleaner.removeWords();
     
     // Third filter, delete lines?
+    vector<int> indexes = inputParser.getLinesToRemove(wordsByLine);
     Reducer reducer = Reducer(wordsByLine, indexes);
     wordsByLine = reducer.eraseLines();
 

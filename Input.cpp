@@ -29,6 +29,7 @@ class Input {
 		void askInputSource();
 		vector<vector<string> > getInput();
 		vector<int> getLinesToRemove(vector<vector<string> > input);
+		vector<string> getStopWords(vector<vector<string> > lines);
 	private:
 		bool isFile;
 		string fileName;
@@ -43,7 +44,6 @@ Input::Input() {
 	this->isFile = false;
 	this->fileName = "";
 }
-
 
 // This function check whether the user wants to type the input data
 // or if its comes from a file.
@@ -64,24 +64,55 @@ void Input::askInputSource() {
 	}
 }
 
+vector<string> Input::getStopWords(vector<vector<string> > lines) {
+	char ask = ' ';
+	vector<string> stopWords;
+	cout << "Do you want to erase some words from the input(y/n)? ";
+	cin >> ask;
+	while(ask != 'y' && ask != 'n') {
+			cout << "Error: Answer should be 'y' or 'n'\n";
+			cout << "Do you want to erase some words from the input(y/n)? ";
+			cin >> ask;
+	}
+	if(ask == 'y') {
+			int amount = 0;
+			string word = "";
+			cout << "How many words? ";
+			cin >> amount;
+			for(int i = 0; i < amount; i++) {
+					cout << "Word #" << i+1 << ": ";
+					cin >> word;
+					stopWords.push_back(word);            
+			}
+	}
+	return stopWords;
+}
+
 // This function asks for the indexes of the lines to remove from 
 // the original input
 vector<int> Input::getLinesToRemove(vector<vector<string> > input) {
 	vector<int> indexes;
-	cout << "Do you want to delete lines from the original input? yes(1), no(0)? ";
-    bool isDelete = false;
-    cin >> isDelete;
-	if (isDelete) {
-      int number_lines_reduced = 0;
-      do {
-        cout << "How many lines do you want to remove? ";
-        cin >> number_lines_reduced;
+	cout << "Do you want to delete lines from the original input? (y/n)? ";
+	char isDelete = ' ';
+	cin >> isDelete;
+	while(isDelete != 'y' && isDelete != 'n') {
+		cout << "Error: Answer should be 'y' or 'n'\n";
+		cout << "Do you want to delete lines from the original input? (y/n)? ";
+		cin >> isDelete;
+	}
+	if (isDelete == 'y') {
+      int number_lines_reduced = -1;
+			cout << "How many lines do you want to remove? ";
+      cin >> number_lines_reduced;
+      while (number_lines_reduced < 0 or number_lines_reduced >= input.size()) {
         if (number_lines_reduced < 0) {
           cout << "Error: Please enter a positive number of lines." << endl;
         } else if (number_lines_reduced >= input.size()) {
           cout << "Error: Please enter a number lower than the number of lines." << endl;
         }
-      } while (number_lines_reduced < 0 or number_lines_reduced >= input.size());
+				cout << "How many lines do you want to remove? ";
+      	cin >> number_lines_reduced;
+      }
       int index;
       
       while (number_lines_reduced) {
