@@ -6,6 +6,13 @@ using namespace std;
 
 typedef vector<string> vs;
 
+
+// CircularShifter class.
+// Performs a circular shift of a series of line.
+// The constructor takes a vector of vectors (matrix) of strings
+// and for each line it performs the rotation and it stores it 
+// vector
+
 class CircularShifter {
 	public:
 		CircularShifter(vector<vector<string> > lines);
@@ -15,10 +22,15 @@ class CircularShifter {
 		vs generateRotations(vector<string> line);
 };
 
+
+// Constructor that takes as a parameter a matrix of strings
 CircularShifter::CircularShifter(vector<vector<string> > lines) {
 	this->lines = lines;
 }
 
+
+// Private function that receives a vector of strings
+// and performs a rotation
 vs CircularShifter::generateRotations(vector<string> line) {
 	vector<string> results;
 	string words = "";
@@ -44,12 +56,14 @@ vs CircularShifter::generateRotations(vector<string> line) {
 	return results;
 }
 
+// Public function that for each line it rotates it
+// and returns the vector that contains all the strings.
 vs CircularShifter::rotateLines() {
 	vector<string> rotatedLines(1);
 	vector<string> aux;
 	string line;
 	for (int i = 0; i < lines.size(); ++i) {
-		// for each line do the following, gerate its rotations
+		// for each line do the following, generate its rotations
 		aux = generateRotations(lines[i]);
 		// append it to final vector
 		rotatedLines.insert(rotatedLines.end(), aux.begin(), aux.end());

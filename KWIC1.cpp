@@ -11,15 +11,9 @@ using namespace std;
 int main() {
     queue<string> linesList;
 
+    // Get the input
     Input inputParser = Input();
-	// check if input will come from a file or the command console
-    inputParser.askInputSource();
-
-    // get the stuff again
-    linesList = inputParser.getInput();
-    
-    // Get the stuff again
-    vector<vector<string> > wordsByLine = inputParser.processInput(linesList);
+    vector<vector<string> > wordsByLine = inputParser.getInput();
 
     // Circular shift the stuff
    	CircularShifter shifter = CircularShifter(wordsByLine);

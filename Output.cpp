@@ -4,6 +4,9 @@
 
 using namespace std;
 
+
+// Output class.
+// Prints a list of strings
 class Output {
 	public:
 		Output(vector<string> lines);
@@ -12,10 +15,15 @@ class Output {
 		vector<string> lines;
 };
 
+// Set the private variable lines to the received parameters.
+// The expected type is a vector of strings.
 Output::Output(vector<string> lines) {
 	this->lines = lines;
 }
 
+// Iterates through the private vector using the C++11 specifier auto.
+// This allow us to not specify the data type and let the compiler
+// automatically deduct the type which is easier for us.
 void Output::print() {
 	for (auto &i: lines) {
 		cout << i << "\n";
