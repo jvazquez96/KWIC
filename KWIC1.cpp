@@ -17,19 +17,8 @@ int main() {
     Input inputParser = Input();
     vector<vector<string> > wordsByLine = inputParser.getInput();
 
-    // Second filter, perform a rotation of the input
-   	CircularShifter shifter = CircularShifter(wordsByLine);
-   	vector<string> rotatedLines = shifter.rotateLines();
-
-   	// Third filter, sort the data
-   	Alphabetizer alphabetizer = Alphabetizer(rotatedLines);
-   	bool type;
-   	cout << "Do you want to sort it ascending(1) or descending(0)" << endl;
-   	cin >> type;
-   	vector<string> sortedLines = alphabetizer.sort(type);
-
-    // Fourth filter, eliminates data if the user wants
-    cout << "Do you want to delete lines from the sorted file? yes(1), no(0)" << endl;
+    // Second filter, delete files?
+    cout << "Do you want to delete lines from the original file? yes(1), no(0)" << endl;
     bool isDelete = false;
     cin >> isDelete;
     if (isDelete) {
@@ -39,10 +28,10 @@ int main() {
         cin >> number_lines_reduced;
         if (number_lines_reduced < 0) {
           cout << "Please enter a positive number of lines" << endl;
-        } else if (number_lines_reduced > sortedLines.size()) {
+        } else if (number_lines_reduced > wordsByLine.size()) {
           cout << "Please enter a number less than the number of lines" << endl;
         }
-      } while (number_lines_reduced < 0 or number_lines_reduced > sortedLines.size());
+      } while (number_lines_reduced < 0 or number_lines_reduced > wordsByLine.size());
       int index;
       vector<int> indexes;
       while (number_lines_reduced) {
@@ -51,7 +40,7 @@ int main() {
           cin >> index;
           if (index < 0) {
             cout << "Please make sure to enter a number greater than 0" << endl;
-          } else if (index > sortedLines.size()) {
+          } else if (index > wordsByLine.size()) {
             cout << "Please make sure to enter a number less than the size of the list of words" << endl;
           } else if (find(indexes.begin(), indexes.end(), index) != indexes.end()) {
             cout << "Please make sure not to enter a repeated indexes" << endl;
@@ -61,15 +50,27 @@ int main() {
             }
             cout << endl;
           }
-        } while ((index < 0 or index > number_lines_reduced > sortedLines.size()) or find(indexes.begin(), indexes.end(), index) != indexes.end());
+        } while ((index < 0 or index > number_lines_reduced > wordsByLine.size()) or find(indexes.begin(), indexes.end(), index) != indexes.end());
         indexes.push_back(index);
         --number_lines_reduced;
       }
-      Reducer reducer = Reducer(sortedLines, indexes);
-      sortedLines = reducer.eraseLines();
+      Reducer reducer = Reducer(wordsByLine, indexes);
+      wordsByLine = reducer.eraseLines();
     }
 
-   	// Fourth filter, print the data
+    // Thrids filter, perform a rotation of the input
+   	CircularShifter shifter = CircularShifter(wordsByLine);
+   	vector<string> rotatedLines = shifter.rotateLines();
+
+   	// Fourth filter, sort the data
+   	Alphabetizer alphabetizer = Alphabetizer(rotatedLines);
+   	bool type;
+   	cout << "Do you want to sort it ascending(1) or descending(0)" << endl;
+   	cin >> type;
+   	vector<string> sortedLines = alphabetizer.sort(type);
+
+
+   	// Fifth filter, print the data
     Output printer = Output(sortedLines);
     printer.print();
 
