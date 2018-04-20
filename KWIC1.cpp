@@ -6,6 +6,7 @@
 #include "Input.cpp"
 #include "Output.cpp"
 #include "Reducer.cpp"
+#include "Cleaner.cpp"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ int main() {
     Input inputParser = Input();
     vector<vector<string> > wordsByLine = inputParser.getInput();
     vector<int> indexes = inputParser.getLinesToRemove(wordsByLine);
-    
+
     // Second filter, delete lines?
     Reducer reducer = Reducer(wordsByLine, indexes);
     wordsByLine = reducer.eraseLines();
