@@ -17,7 +17,7 @@ class Reducer {
     // Methods
     public:
         // constructors
-        Reduccer();
+        Reducer();
         Reducer(vector<string> vInput);
         Reducer(vector<string> vInput, vector<int> vLines);
 
@@ -39,45 +39,47 @@ class Reducer {
 
 };
 
-Reducer::Reduccer() {
+Reducer::Reducer() {
     // vectors get initialized on their own
 }
 
 Reducer::Reducer(vector<string> vInput) {
-    this.vInput = vInput;
+    this->vInput = vInput;
 }
 
 Reducer::Reducer(vector<string> vInput, vector<int> vLines) {
-    this.vInput = vInput;
-    this.vLines = vLines;
+    this->vInput = vInput;
+    this->vLines = vLines;
 }
 
 // getters
 vector<string> Reducer::getInputLines() {
-    return this.vInput;
+    return this->vInput;
 }
-vector<int> Reducer::getLinesToReduce() {
-    return this.vLines;
+
+vector<int> Reducer::getLinesToReduce() {
+    return this->vLines;
 }
 // setters
 void Reducer::setInputLines(vector<string> vI) {
-    this.vInput = vI;
+    this->vInput = vI;
 }
 void Reducer::setReduceLines(vector<int> vR) {
-    this.vLines = vR;
+    this->vLines = vR;
 }
 // additional
 vector<string> Reducer::eraseLines() {
     // for the user line indexing starts at 1.
     // so we need to substract 1 to each line index given
-    for(int i = 0; i < this.vLines.size(); i++) {
-        line = this.vLines[i] - 1;
-        this.vInput.erase(this.vInput.begin() + line);
+    for(int i = 0; i < this->vLines.size(); i++) {
+        int line = this->vLines[i] - 1;
+        this->vInput.erase(this->vInput.begin() + line);
     }
+    return vInput;
 }
 void Reducer::askForLines() {
     // empty vector of lines
-    this.vLines.clear()
+    this->vLines.clear();
     // auxiliar variables
     int lines = 0, index = 0;
 
@@ -86,6 +88,6 @@ void Reducer::askForLines() {
     for(int i = 0; i < lines; i++) {
         cout << "Enter line number(" << i + 1 << "): ";
         cin >> index;
-        this.vLines.push_back(index);
+        this->vLines.push_back(index);
     }
 }
