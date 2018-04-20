@@ -195,17 +195,21 @@ vector<vector<string> > Input::getInput()  {
 
 	if (isFile) {
 		// open file
-		ifstream myFile(fileName);
-		if(myFile.is_open()) {
-			// process file if it was opened
-			while (getline(myFile, line)) {
+		ifstream myFile;
+		myFile.open(fileName.c_str());
+
+		while(myFile.fail()) {
+			cout << "File could not be opened.\n";
+			askInputSource();
+			myFile.open(fileName.c_str());
+		}
+
+		// process file if it was opened
+		while (getline(myFile, line)) {
 			// push line to queue
 			result.push(line);
-			}
-			myFile.close();
-		} else {
-			cout << "File could not be opened.\n";
 		}
+		myFile.close();
 	} else {
 		// ask for lines
 		int linesAmount = 0;
