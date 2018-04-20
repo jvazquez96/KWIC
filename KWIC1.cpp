@@ -8,25 +8,26 @@
 
 using namespace std;
 
-int main() {
-    queue<string> linesList;
 
-    // Get the input
+// Main class that controls the flow of the whole
+// pipes and filter sistem
+int main() {
+    // First filter, get the input
     Input inputParser = Input();
     vector<vector<string> > wordsByLine = inputParser.getInput();
 
-    // Circular shift the stuff
+    // Second filter, perform a rotation of the input
    	CircularShifter shifter = CircularShifter(wordsByLine);
    	vector<string> rotatedLines = shifter.rotateLines();
 
-   	// Sort the stuff
+   	// Third filter, sort the data
    	Alphabetizer alphabetizer = Alphabetizer(rotatedLines);
    	bool type;
    	cout << "Do you want to sort it ascending(1) or descending(0)" << endl;
    	cin >> type;
    	vector<string> sortedLines = alphabetizer.sort(type);
 
-   	// Print stuff
+   	// Fourth filter, print the data
     Output printer = Output(sortedLines);
     printer.print();
 
