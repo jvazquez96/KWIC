@@ -78,12 +78,16 @@ void Cleaner::setWords(vector<string> w) {
 vector<vector<string> > Cleaner::removeWords() {
     // for each word
     vector<vector<string> > temp = this->lines;
+    string w = "";
     for(int i = 0; i < this->words.size(); i++) {
+        w = this->words[i];
         // delete the word for each line
         for(int j = 0; j < temp.size(); j++) {
             for(int k = 0; k < temp[j].size(); k++) {
-                // delete the word
-                temp[j].erase(temp[j].begin(), temp[j].begin() + k);
+                // delete the word if it is an stop word
+                if(temp[j][k] == w) {
+                    temp[j].erase(temp[j].begin() + k);
+                }
             }
         }
     }
