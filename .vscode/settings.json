@@ -19,6 +19,7 @@
         "stack": "cpp",
         "string": "cpp",
         "iostream": "cpp",
-        "__bit_reference": "cpp"
+        "__bit_reference": "cpp",
+        "atomic": "cpp"
     }
 }

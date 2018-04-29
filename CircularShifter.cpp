@@ -15,13 +15,19 @@ typedef vector<string> vs;
 
 class CircularShifter {
 	public:
+		CircularShifter();
 		CircularShifter(vector<vector<string> > lines);
 		vs rotateLines();
+		// setter
+		void setLines(vector<vector<string> > newLines);
 	private:
 		vector<vector<string> > lines;
 		vs generateRotations(vector<string> line);
 };
 
+CircularShifter::CircularShifter(){
+	
+}
 
 // Constructor that takes as a parameter a matrix of strings
 CircularShifter::CircularShifter(vector<vector<string> > lines) {
@@ -70,4 +76,8 @@ vs CircularShifter::rotateLines() {
 	}
 	rotatedLines.erase(rotatedLines.begin());
 	return rotatedLines;
+}
+
+void CircularShifter::setLines(vector<vector<string> > newLines) {
+	this->lines = newLines;
 }

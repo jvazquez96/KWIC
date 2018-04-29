@@ -16,14 +16,20 @@ typedef vector<string> vs;
 
 class Alphabetizer {
 	public:
+		Alphabetizer();
 		Alphabetizer(vs lines);
 		vs sort(bool type);
+		void setLines(vector<string> newLines);
 	private:
 		void sortAscending();
 		void sortDescending();
 		// Used to store the lines
 		vs lines;
 };
+
+Alphabetizer::Alphabetizer() {
+	
+}
 
 // Sets the private variable lines to the received parameter.
 // The expected data type is a vector of strings.
@@ -57,4 +63,8 @@ vs Alphabetizer::sort(bool type) {
 		sortDescending();
 	}
 	return this->lines;
+}
+
+void  Alphabetizer::setLines(vector<string> newLines) {
+	this->lines = newLines;
 }

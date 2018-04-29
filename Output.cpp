@@ -9,11 +9,17 @@ using namespace std;
 // Prints a list of strings
 class Output {
 	public:
+		Output();
 		Output(vector<string> lines);
 		void print();
+		void setLines(vector<string> l);
 	private:
 		vector<string> lines;
 };
+
+Output::Output() {
+	
+}
 
 // Set the private variable lines to the received parameters.
 // The expected type is a vector of strings.
@@ -28,4 +34,8 @@ void Output::print() {
 	for (auto &i: lines) {
 		cout << i << "\n";
 	}
+}
+
+void Output::setLines(vector<string> l) {
+	this->lines = l;
 }
